@@ -3,18 +3,22 @@ import Link from "next/link";
 import { HamburgerMenu, CloseHamburgerMenu } from "../icons";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { PAGES } from "./pages.js";
 import styles from "./styles.module.scss";
+
+import { useRouter } from "next/router";
 
 const Header = () => {
   const [expandMobileMenu, setExpandMobileMenu] = useState(false);
 
+  const { pathname } = useRouter();
   const ref = useRef();
 
   const toggleMenu = () => {
     setExpandMobileMenu(!expandMobileMenu);
   };
 
-  useOutsideClick(ref, toggleMenu);
+  // useOutsideClick(ref, toggleMenu);
 
   const { width } = useWindowSize();
 
@@ -24,67 +28,26 @@ const Header = () => {
     }
   }, [width]);
 
-  const MobileMenu = () => (
-    <div className={styles.mobileMenu}>
-      <li>
-        <Link href="/">
-          <a>Home</a>
-        </Link>
-      </li>
-      <li>
-        <Link href="/portfolio">
-          <a>Portfolio</a>
-        </Link>
-      </li>
-      <li>
-        <Link href="/">
-          <a>Blog</a>
-        </Link>
-      </li>
-      <li>
-        <Link href="/">
-          <a>LinkedIn</a>
-        </Link>
-      </li>
-      <li>
-        <Link href="/">
-          <a>Contact</a>
-        </Link>
-      </li>
-    </div>
-  );
+  const menu = PAGES.map(({ name, path, target }) => (
+    <li
+      key={name}
+      className={`${pathname === path ? styles.activeMenuItem : ""}`}
+    >
+      <Link href={path}>
+        <a target={target}>{name}</a>
+      </Link>
+    </li>
+  ));
+
+  const MobileMenu = () => <div className={styles.mobileMenu}>{menu}</div>;
 
   return (
     <div className={styles.header}>
       <nav className={styles.header_nav}>
-        <span className={styles.header_logo}>{"<sakicmilan/>"}</span>
-        <menu className={styles.header_menu}>
-          <li>
-            <Link href="/">
-              <a>Home</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/portfolio">
-              <a>Portfolio</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/">
-              <a>Blog</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/">
-              <a>LinkedIn</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/">
-              <a>Contact</a>
-            </Link>
-          </li>
-        </menu>
+        <Link href="/">
+          <a className={styles.header_logo}>{"<sakicmilan/>"}</a>
+        </Link>
+        <menu className={styles.header_menu}>{menu}</menu>
 
         <span
           className={`${styles.header_hamburgerMenu} ${
