@@ -9,6 +9,10 @@
   height: 280px;
   line-height: 30px;
   background-color: var(--secondary-color);
+
+  @media only screen and (max-width: 1300px) {
+    height: 100%;
+  }
 }
 
 .footer_container {
@@ -26,6 +30,10 @@
   @media (max-width: 900px) {
     flex-direction: column;
   }
+
+  div {
+    margin-bottom: 22px;
+  }
 }
 
 .footer_columnTitle {
@@ -39,6 +47,10 @@
   @include footerFlex;
   width: 474px;
   line-height: 24px;
+
+  @media only screen and (max-width: 720px) {
+    max-width: 100%;
+  }
 }
 
 .footer_posts {

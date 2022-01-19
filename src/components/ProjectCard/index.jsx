@@ -13,8 +13,9 @@ const ProjectCard = () => {
         <Image
           src={"/testimage.jpg"}
           alt="Picture of the author"
-          width={"450"}
-          height={"320"}
+          layout="fill"
+          height={"320px"}
+          width={"400px"}
         />
       </image>
       <div className={styles.project_data}>
@@ -26,7 +27,7 @@ const ProjectCard = () => {
             industry. Lorem Ipsum has been the industrys standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
             and scrambled it to make a type specimen book. Lorem Ipsum has been
-            the industry's standard dummy text ever since the 1500s, when an
+            the industrys standard dummy text ever since the 1500s, when an
             unknown printer took a galley of type and scrambled it to make a
             type specimen book. Lorem Ipsum has been the industrys standard
             dummy text.
@@ -34,7 +35,7 @@ const ProjectCard = () => {
         </div>
         <div>
           <div className={styles.project_technologies}>
-            Technologies: <Chip />
+            <div>Technologies:</div> <Chip />
             <Chip />
             <Chip />
             <Chip />

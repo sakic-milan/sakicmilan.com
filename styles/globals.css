@@ -23,9 +23,10 @@ a {
 }
 
 .pageDescription {
-  width: 82%;
+  height: 100%;
+  width: 100%;
   margin: 0;
-  height: 84px;
+  margin-bottom: 30px;
   font-size: 18px;
   line-height: 25px;
 }

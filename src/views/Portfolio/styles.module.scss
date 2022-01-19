@@ -1,15 +1,55 @@
 .portfolio_section {
-  display: flex;
-  justify-content: space-between;
+  @media (min-width: 1200px) {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 .sidebar {
-  width: 100%;
+  width: 220px;
+  min-width: 200px;
   margin: 0 20px 0 4px;
+
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 }
 
 .filters {
   font-size: 20px;
+  margin-bottom: 12px;
   line-height: 27px;
   color: var(--primary-color);
   border-bottom: 1px solid var(--primary-color);
+}
+
+.checkboxGroup {
+  @media (max-width: 1200px) {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 16px auto 12px;
+  }
+}
+
+.checkbox {
+  display: flex;
+  margin-bottom: 6px;
+  @media (max-width: 1200px) {
+    margin-right: 16px;
+  }
+}
+
+.checkboxInput {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  margin-right: 6px;
+
+  @media (max-width: 1200px) {
+    margin-right: 4px;
+  }
+}
+
+.checkboxLabel {
+  margin: auto 0;
+  white-space: nowrap;
 }
