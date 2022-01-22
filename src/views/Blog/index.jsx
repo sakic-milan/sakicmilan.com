@@ -1,7 +1,9 @@
 import BlogCard from "../../components/BlogCard";
 import styles from "./styles.module.scss";
 
-const Blog = () => {
+const Blog = ({ postsPayload }) => {
+  const { data: posts, meta } = postsPayload;
+
   return (
     <>
       <h1 className="pageTitle">Blog</h1>
@@ -12,17 +14,19 @@ const Blog = () => {
         scrambled it to make a type specimen book.
       </p>
       <section className={styles.blog_posts}>
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
+        {posts.map(({ id, attributes }) => (
+          <BlogCard key={id} data={attributes} />
+        ))}
       </section>
     </>
   );
 };
+
+export async function getServerSideProps(ctx) {
+  const res = await fetch(`http://localhost:1337/api/posts`);
+  const postsPayload = await res.json();
+
+  return { props: { postsPayload } };
+}
 
 export default Blog;

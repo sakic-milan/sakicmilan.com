@@ -1,42 +1,17 @@
 import styles from "./styles.module.scss";
 import BlogCard from "@components/BlogCard";
+import ReactMarkdown from "react-markdown";
 import Link from "next/link";
 
-const SingleBlogPost = () => {
+const SingleBlogPost = ({ data, keywords }) => {
+  const { title, content } = data;
+
   return (
     <section className={styles.single_post_section}>
-      <article>
-        <h1 className="pageTitle">
-          This is title of super exiting blog poston my website
-        </h1>
+      <article className={styles.article}>
+        <h1 className="pageTitle">{title}</h1>
         <main className={styles.post_content}>
-          Contrary to popular belief, Lorem Ipsum is not simply random text. It
-          has roots in a piece of classical Latin literature from 45 BC, making
-          it over 2000 years old. Richard McClintock, a Latin professor at
-          Hampden-Sydney College in Virginia, looked up one of the more obscure
-          Latin words, consectetur, from a Lorem Ipsum passage, and going
-          through the cites of the word in classical literature, discovered the
-          undoubtable source. Lorem Ipsum comes from sections 1.10.32 and
-          1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and
-          Evil) by Cicero, written in 45 BC. This book is a treatise on the
-          theory of ethics, very popular during the Renaissance. The first line
-          of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in
-          section 1.10.32. The standard chunk of Lorem Ipsum used since the
-          1500s is reproduced below for those interested. Sections 1.10.32 and
-          1.10.33 from de Finibus Bonorum et Malorum by Cicero are also
-          reproduced in their exact original form, accompanied by English
-          versions from the 1914 translation by H. Rackham. Contrary to popular
-          belief, Lorem Ipsum is not simply random text. It has roots in a piece
-          of classical Latin literature from 45 BC, making it over 2000 years
-          old. Richard McClintock, a Latin professor at Hampden-Sydney College
-          in Virginia, looked up one of the more obscure Latin words,
-          consectetur, from a Lorem Ipsum passage, and going through the cites
-          of the word in classical literature, discovered the undoubtable
-          source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de
-          Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero,
-          written in 45 BC. This bok is a treatise on the theory of ethics, very
-          popular during the Renaissance. The first line of Lorem Ipsum, Lorem
-          ipsum dolor sit amet..s, comes from a line in section 1.10.32.
+          <ReactMarkdown>{content}</ReactMarkdown>
         </main>
 
         <div className={styles.promo_text}>
@@ -52,11 +27,59 @@ const SingleBlogPost = () => {
       </article>
       <aside className={styles.blogSuggestion}>
         <p>I found these related and popular:</p>
-        <BlogCard />
-        <BlogCard />
+
+        <BlogCard data={data} />
+        <BlogCard data={data} />
       </aside>
     </section>
   );
 };
+
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// revalidation is enabled and a new request comes in
+export async function getStaticProps(context) {
+  const { slug } = context.params;
+  const res = await fetch(
+    `http://localhost:1337/api/posts?populate=technologies&?filters[slug][$eq]=${slug}`
+  );
+  const { data } = await res.json();
+
+  const keywords = data[0].attributes.technologies.data.map(
+    (el) => el.attributes.name
+  );
+
+  return {
+    props: {
+      data: data[0].attributes,
+      keywords,
+    },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 10 seconds
+    revalidate: 60, // In seconds
+  };
+}
+
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// the path has not been generated.
+export async function getStaticPaths() {
+  const res = await fetch("http://localhost:1337/api/posts");
+  let { data } = await res.json();
+
+  // Get the paths we want to pre-render based on posts
+  const paths = data.map((data) => ({
+    params: { slug: data.attributes.slug },
+  }));
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: blocking } will server-render pages
+  // on-demand if the path doesn't exist.
+  return {
+    paths,
+    fallback: "blocking",
+  };
+}
 
 export default SingleBlogPost;
