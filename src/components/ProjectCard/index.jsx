@@ -2,11 +2,20 @@ import Image from "next/image";
 
 import styles from "./styles.module.scss";
 
-const Chip = () => {
-  return <span className={styles.chip}>Javascript</span>;
+const Chip = ({ name }) => {
+  return <span className={styles.chip}>{name}</span>;
 };
 
-const ProjectCard = () => {
+const ProjectCard = ({ project }) => {
+  console.log(project);
+
+  const { title, demoUrl, repositoryUrl, description, image, technologies } =
+    project;
+
+  const imageUrl = image.data.attributes.url;
+
+  const techs = technologies.data.map((el) => el.attributes.name);
+
   return (
     <article className={styles.project_card}>
       <image className={styles.project_image}>
@@ -20,37 +29,30 @@ const ProjectCard = () => {
       </image>
       <div className={styles.project_data}>
         <div>
-          <h1 className={styles.project_title}>Super awesome website</h1>
+          <h1 className={styles.project_title}>{title}</h1>
           <hr className={styles.title_underline} />
-          <p className={styles.project_description}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. Lorem Ipsum has been
-            the industrys standard dummy text ever since the 1500s, when an
-            unknown printer took a galley of type and scrambled it to make a
-            type specimen book. Lorem Ipsum has been the industrys standard
-            dummy text.
-          </p>
+          <p className={styles.project_description}>{description}</p>
         </div>
         <div>
           <div className={styles.project_technologies}>
-            <div>Technologies:</div> <Chip />
-            <Chip />
-            <Chip />
-            <Chip />
+            <div>Technologies:</div>
+            {techs.map((tech, i) => (
+              <Chip key={i} name={tech} />
+            ))}
           </div>
           <div className={styles.project_resources}>
             <a
-              href="github.com"
+              href={repositoryUrl}
               target="_blank"
+              rel="noreferrer"
               className={styles.resource_link}
             >
               Repositiory
             </a>
             <a
-              href="github.com"
+              href={demoUrl}
               target="_blank"
+              rel="noreferrer"
               className={styles.resource_link}
             >
               Live preview
