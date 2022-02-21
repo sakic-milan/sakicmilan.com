@@ -1,6 +1,23 @@
+import { useState, useEffect } from "react";
+import Link from "next/link";
+
 import styles from "./styles.module.scss";
 
 const Footer = () => {
+  const [posts, setPosts] = useState([]);
+  const getPosts = async () => {
+    const res = await fetch(
+      "http://localhost:1337/api/posts?pagination[page]=1&pagination[pageSize]=3"
+    );
+    const { data } = await res.json();
+    console.log("DTA", data);
+    setPosts(data);
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
   return (
     <footer className={styles.footer}>
       <div className={styles.footer_container}>
@@ -17,18 +34,32 @@ const Footer = () => {
         <div className={styles.footer_posts}>
           <span className={styles.footer_columnTitle}>Latest articles</span>
           <span>
-            <div>What is virtual dom in react</div>
-            <div>Why you need to learn GraphQL</div>
-            <div>Why you should contribute in opensource projects</div>
+            {posts.map(({ id, attributes }) => (
+              <Link key={id} href={`/blog/${attributes.slug}`}>
+                <a>{attributes.title}</a>
+              </Link>
+            ))}
           </span>
         </div>
         <div className={styles.footer_links}>
           <span className={styles.footer_columnTitle}>Links</span>
-          <span>Download Resume</span>
-          <span>Projects</span>
-          <span>LinkedIn</span>
-          <span>Blog</span>
-          <span>Contact</span>
+          <Link href={`/Sakic Milan Resume.pdf`}>
+            <a target="_blank" alt="Resume pdf" rel="noopener noreferrer">
+              My Resume
+            </a>
+          </Link>
+          <Link href={`/portfolio`}>
+            <a>Portfolio</a>
+          </Link>
+          <Link href={"https://www.linkedin.com/in/sakicmilan/"}>
+            <a target="_blank">LinkedIn</a>
+          </Link>
+          <Link href={`/blog/`}>
+            <a>Blog</a>
+          </Link>
+          <Link href={`/contact`}>
+            <a>Contact</a>
+          </Link>
         </div>
       </div>
     </footer>

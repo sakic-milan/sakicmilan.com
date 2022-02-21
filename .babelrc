@@ -1,5 +1,5 @@
 {
-  "presets": ["next/babel"],
+  "presets": ["@babel/preset-env"],
   "plugins": [
     [
       "module-resolver",
@@ -8,6 +8,7 @@
         "alias": {
           "@components": "./src/components",
           "@views": "./src/views",
+          "@icons": "./src/icons",
           "@styles": "./styles"
         }
       }

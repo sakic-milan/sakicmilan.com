@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ProjectCard from "../../components/ProjectCard";
 import styles from "./styles.module.scss";
 
-const Checkbox = ({ name, handleSelect, checked }) => {
+const Checkbox = ({ name, handleSelect, checked, count }) => {
   return (
     <div className={styles.checkbox}>
       <input
@@ -15,7 +15,7 @@ const Checkbox = ({ name, handleSelect, checked }) => {
         onChange={handleSelect}
       />
       <label htmlFor={name} className={styles.checkboxLabel}>
-        {name}
+        {`${name} (${count})`}
       </label>
     </div>
   );
@@ -34,29 +34,34 @@ const Portfolio = ({ projectsPayload }) => {
     const { data } = await res.json();
     const filters = data.map((el) => el.attributes.name);
     setFilters(filters);
+    setSelected([]);
   };
-
-  console.log("Projects", projects);
-
-  useEffect(() => {
-    setDisplayProjects(allProjects);
-    // if (filters.length === 0) {
-    //   setDisplayProjects(allProjects);
-    // } else {
-    //   const proj = allProjects.filter((p) =>
-    //     p.attributes.technologies.data
-    //       .map((t) => t.attributes.name)
-    //       .every((el) => filters.includes(el))
-    //   );
-    //   alert("called");
-    //   setDisplayProjects(proj);
-    // }
-  }, [filters, allProjects]);
 
   useEffect(() => {
     setAllProjects(projects);
+    setDisplayProjects(projects);
     getTechnologies();
   }, []);
+
+  const filterProjects = () => {
+    if (selected.length === filters.length || selected.length === 0) {
+      setDisplayProjects(allProjects);
+      return;
+    }
+
+    const filtered = allProjects.filter((p) => {
+      const technologis = p.attributes.technologies.data.map(
+        (t) => t.attributes.name
+      );
+      return technologis.some((el) => selected.includes(el));
+    });
+
+    setDisplayProjects(filtered);
+  };
+
+  useEffect(() => {
+    filterProjects();
+  }, [selected]);
 
   const handleSelect = (e) => {
     if (e.target.checked) {
@@ -64,6 +69,15 @@ const Portfolio = ({ projectsPayload }) => {
     } else {
       setSelected(selected.filter((el) => el !== e.target.name));
     }
+  };
+
+  const projectsByTechnologie = (t) => {
+    return allProjects.filter((p) => {
+      const techs = p.attributes.technologies.data.map(
+        (t) => t.attributes.name
+      );
+      return techs.some((tch) => tch.includes(t));
+    }).length;
   };
 
   return (
@@ -77,7 +91,10 @@ const Portfolio = ({ projectsPayload }) => {
       </p>
       <section className={styles.portfolio_section}>
         <aside className={styles.sidebar}>
-          <div className={styles.filters}>Filter projects</div>
+          <div className={styles.filters}>
+            Filter projects{" "}
+            {`(${displayProjects.length} / ${allProjects.length})`}
+          </div>
           <div className={styles.checkboxGroup}>
             {filters.map((filter) => (
               <Checkbox
@@ -85,6 +102,7 @@ const Portfolio = ({ projectsPayload }) => {
                 name={filter}
                 handleSelect={handleSelect}
                 checked={selected.includes(filter)}
+                count={projectsByTechnologie(filter)}
               />
             ))}
           </div>

@@ -1,0 +1,110 @@
+.home_cta {
+  width: 100%;
+  padding: 8px;
+  margin: 4px auto;
+  text-align: center;
+  background: var(--blue);
+  color: white;
+  border: 1px solid var(--gray);
+  border-radius: 25px;
+}
+
+.profile_box {
+  width: 100%;
+  position: relative;
+  height: 200px;
+  background-color: var(--gray);
+  margin: 20px 0px 30px;
+  border-radius: 30px 30px 0 0;
+
+  @media only screen and (max-width: 900px) {
+    height: 100%;
+  }
+}
+
+.badges {
+  overflow: hidden;
+  padding: 4px 8px;
+  height: 220px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+
+  img {
+    max-width: 85px;
+    height: 36px;
+    margin: 4px;
+    opacity: 0.9;
+
+    @media only screen and (max-width: 900px) {
+      height: 32px;
+      margin: 4px;
+    }
+
+    @media only screen and (max-width: 720px) {
+      height: 28px;
+      margin: 4px;
+    }
+  }
+}
+
+.profile_image {
+  bottom: -100px;
+  left: 30px;
+  position: absolute;
+  border: 2px solid var(--blue);
+  background: white;
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
+
+  @media only screen and (max-width: 900px) {
+    left: calc(50% - 100px);
+  }
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  margin-bottom: 40px;
+
+  @media only screen and (max-width: 900px) {
+    display: block;
+  }
+}
+
+.home_sidebar {
+  display: flex;
+  padding: 0 1em;
+  flex-direction: column;
+  min-width: 260px;
+  max-width: 260px;
+  margin-top: 100px;
+  margin-right: 25px;
+
+  @media only screen and (max-width: 900px) {
+    margin: 0 auto;
+    margin-top: 120px;
+  }
+}
+
+.info_home {
+  //background: var(--gray);
+  padding: 8px;
+  border-radius: 4px;
+
+  h2 {
+    color: var(--light-black);
+    margin-top: 10px;
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    line-height: 1.25;
+  }
+
+  p {
+    color: var(--gray-dark);
+    font-size: 0.875;
+    line-height: 1.5;
+  }
+}

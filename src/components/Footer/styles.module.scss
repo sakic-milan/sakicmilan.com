@@ -38,12 +38,15 @@
 
 .footer_columnTitle {
   font-size: 22px;
-  line-height: 30px;
+  line-height: 26px;
   font-weight: 600;
   margin-bottom: 22px;
 }
 
 .footer_about {
+  font-size: 16px;
+  line-height: 36px;
+
   @include footerFlex;
   width: 474px;
   line-height: 24px;
@@ -56,9 +59,19 @@
 .footer_posts {
   @include footerFlex;
   width: 340px;
+
+  a {
+    font-size: 16px;
+    line-height: 26px;
+  }
 }
 
 .footer_links {
   @include footerFlex;
   width: 290px;
+
+  a {
+    font-size: 16px;
+    line-height: 26px;
+  }
 }
